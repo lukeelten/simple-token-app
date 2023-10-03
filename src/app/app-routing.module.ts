@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {StartComponent} from "./start/start.component";
-import {TokenComponent} from "./token/token.component";
+import {WebauthnComponent} from "./webauthn/webauthn.component";
+import {OidcComponent} from "./oidc/oidc.component";
+import {ClientcredComponent} from "./clientcred/clientcred.component";
 
 const routes: Routes = [
   {
@@ -9,8 +11,14 @@ const routes: Routes = [
     component: StartComponent
   },
   {
-    path: '/token',
-    component: TokenComponent
+    path: 'webauthn',
+    component: WebauthnComponent
+  },  {
+    path: 'oidc',
+    component: OidcComponent
+  },  {
+    path: 'client',
+    component: ClientcredComponent
   }
 ];
 
