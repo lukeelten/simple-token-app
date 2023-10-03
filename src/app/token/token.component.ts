@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AfterContentInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {KeycloakService} from "../services/KeycloakService";
 import {Subscription} from "rxjs";
 import {decode} from "js-base64";
@@ -10,52 +10,88 @@ import {decode} from "js-base64";
       "token.scss"
   ]
 })
-export class TokenComponent implements OnInit,OnDestroy {
-  private sub: Subscription | null = null;
-
-  public tokenHtml: string = "";
-
+export class TokenComponent implements OnChanges,AfterContentInit {
   @Input({
     required: true
   })
-  token: string = "";
+  token: string | null = "";
 
+  public header: string = "";
+  public claims: string = "";
+  public signature: string = "";
 
-  public constructor(private keycloakService: KeycloakService) {
+  private decoded = false;
+
+  public constructor() {
   }
 
-  ngOnInit(): void {
-    this.sub = this.keycloakService.getToken().subscribe((token) => {
-      this.setToken(token);
-    }, (err) => {
-      console.log(err);
-    })
+  get claimsRows(): number {
+    return Math.max(8, this.claims.split("\n").length);
+  }
+  get headerRows(): number {
+    return this.header.split("\n").length;
   }
 
-  ngOnDestroy(): void {
-    if (this.sub) {
-      this.sub.unsubscribe();
+  get decodeButtonLabel(): string {
+    if (this.decoded) {
+      return "Encode Token";
+    }
+
+    return "Decode Token";
+  }
+
+  public toggleDecode() {
+    if (this.decoded) {
+      this.encode();
+    } else {
+      this.decode();
     }
   }
 
-  private setToken(token: string) {
-    let parts = token.split(".")
-    let html = "";
+  private decode() {
+    if (!this.token || this.token?.length == 0) {
+      return;
+    }
 
-    const keyPart = decode(parts[0]);
-    const userPart = decode(parts[1]);
-    const signatur = parts[2];
+    const parsedHeader = JSON.parse(decode(this.header));
+    const parsedClaims = JSON.parse(decode(this.claims));
 
-    html += "<p class=\"keypart\">" + keyPart + "</p>";
-    html += "<p class=\"userpart\">" + userPart + "</p>";
-    html += "<p class=\"signatur\">" + signatur + "</p>";
+    this.header = JSON.stringify(parsedHeader, null, 4);
+    this.claims = JSON.stringify(parsedClaims, null, 4);
 
-    this.tokenHtml = html;
+    this.decoded = true;
   }
 
+  private encode() {
+    this.decoded = false;
+    this.parseToken();
+  }
 
+  private parseToken() {
+    if (!this.token || this.token?.length == 0) {
+      return;
+    }
 
+    let parts = this.token.split(".")
+    if (parts.length < 3) {
+      console.error("Invalid token given: " + this.token);
+      return;
+    }
 
+    this.header = parts[0];
+    this.claims = parts[1];
+    this.signature = parts[2];
 
+    if (this.decoded) {
+      this.decode();
+    }
+  }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.ngAfterContentInit();
+  }
+
+  ngAfterContentInit(): void {
+    this.parseToken();
+  }
 }

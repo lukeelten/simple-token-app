@@ -8,8 +8,8 @@ import { TokenComponent } from './token/token.component';
 import {KeycloakService} from "./services/KeycloakService";
 import {FormsModule} from "@angular/forms";
 import { WebauthnComponent } from './webauthn/webauthn.component';
-import { OidcComponent } from './oidc/oidc.component';
 import { ClientcredComponent } from './clientcred/clientcred.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -17,13 +17,13 @@ import { ClientcredComponent } from './clientcred/clientcred.component';
     StartComponent,
     TokenComponent,
     WebauthnComponent,
-    OidcComponent,
     ClientcredComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [
       KeycloakService

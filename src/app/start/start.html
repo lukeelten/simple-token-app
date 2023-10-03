@@ -1,17 +1,12 @@
 <div class="container-fluid align-items-center">
     <div class="row m-3">
         <div class="col text-center">
-            <button class="btn btn-primary" type="button" (click)="LoginClassic()">Login with OIDC</button>
+            <a routerLink="/webauthn" class="btn btn-primary">Login with WebAuthn</a>
         </div>
     </div>
     <div class="row m-3">
         <div class="col text-center">
-            <button class="btn btn-primary" type="button" (click)="LoginWebauthn()">Login with WebAuthn</button>
-        </div>
-    </div>
-    <div class="row m-3">
-        <div class="col text-center">
-            <button class="btn btn-primary" type="button" (click)="ClientDemo()">Client Credentials Demo</button>
+            <a routerLink="/client" class="btn btn-primary">Client Credentials Demo</a>
         </div>
     </div>
 </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-start',
@@ -13,16 +14,15 @@ import { Component } from '@angular/core';
 })
 export class StartComponent {
 
-  public LoginClassic() {
-
+  public constructor(private router: Router) {
   }
 
   public LoginWebauthn() {
-
+    this.router.navigate(['webauthn']);
   }
 
   public ClientDemo() {
-
+    this.router.navigate(['webauthn']);
   }
 
 }

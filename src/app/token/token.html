@@ -1,4 +1,23 @@
-<div class="token">
+<form>
+    <div class="mb-3">
+        <label for="header" class="form-label">Header</label>
+        <textarea id="header" [rows]="headerRows" class="form-control" readonly>{{ header }}</textarea>
+    </div>
 
-</div>
+    <div class="mb-3">
+        <label for="claims" class="form-label">JWT</label>
+        <textarea id="claims" [rows]="claimsRows" class="form-control" readonly>{{ claims }}</textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="signature" class="form-label">Signature</label>
+        <textarea id="signature" rows="5" class="form-control" readonly>{{ signature }}</textarea>
+    </div>
+
+    <div class="mb-3">
+        <button class="btn btn-primary" type="button" (click)="toggleDecode()">{{ decodeButtonLabel }}</button>
+        &nbsp;
+        <a class="btn btn-secondary" href="https://sso.lukeelten.de/realms/webauthn/protocol/openid-connect/certs" target="_blank">Show Certificates</a>
+    </div>
+</form>
 

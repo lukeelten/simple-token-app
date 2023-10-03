@@ -1,0 +1,10 @@
+
+
+interface ClientCredentialsRequest {
+
+
+}
+
+interface ClientCredentials {
+
+}
